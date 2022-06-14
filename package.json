@@ -10,16 +10,26 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vs-logger.helloWorld"
-	],
+        "onLanguage:javascript",
+        "onLanguage:typescript"
+    ],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vs-logger.helloWorld",
-				"title": "Hello World"
+				"command": "vs-logger.printSelection",
+				"title": "PrintSelection"
 			}
-		]
+		],
+        "menus": { 
+            "editor/context": [ 
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.printSelection",
+                    "group": "z_commands" 
+                }
+            ]
+        }
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
