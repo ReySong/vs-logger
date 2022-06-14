@@ -17,15 +17,15 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "vs-logger.printSelection",
-				"title": "PrintSelection"
+				"command": "vs-logger.logSelection",
+				"title": "LogSelection"
 			}
 		],
         "menus": { 
             "editor/context": [ 
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.printSelection",
+                    "command": "vs-logger.logSelection",
                     "group": "z_commands" 
                 }
             ]

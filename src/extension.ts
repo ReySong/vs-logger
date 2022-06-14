@@ -1,26 +1,39 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vs-logger" is now active!');
+    console.log(123);
+    console.log(vscode.window.activeTextEditor?.selections);
+    let disposable = vscode.commands.registerCommand("vs-logger.logSelection", logSelection);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vs-logger.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vs-logger!');
-	});
-
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
+function logSelection() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
+    const textContent = [] as string[];
+    const ranges = editor.selections;
+    ranges.forEach((r) => {
+        const text = editor.document.getText(r);
+        let str = text ? `console.log(${JSON.stringify(text + ":")}, ${text});` : "console.log";
+        textContent.push(str);
+    });
+
+    vscode.commands.executeCommand("editor.action.insertLineAfter").then(() => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+        const ranges = editor.selections;
+        const positions = [] as vscode.Position[];
+        ranges.forEach((r) => {
+            const position = new vscode.Position(r.start.line, r.start.character);
+            positions.push(position);
+        });
+        editor.edit((handler) => {
+            positions.forEach((position, index) => {
+                handler.insert(position, textContent[index]);
+            });
+        });
+    });
+}
+
 export function deactivate() {}
