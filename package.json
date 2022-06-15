@@ -63,7 +63,17 @@
             "command": "vs-logger.warnSelection",
             "key": "alt+w",
             "mac": "alt+w"
-        }]
+        }],
+        "configuration": {
+            "title": "VS-Logger",
+            "properties": { 
+                "vs-logger.customCb": { 
+                    "type": "string",
+                    "default": "",
+                    "description": "custom callbacks"
+                }
+            }
+        }
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
