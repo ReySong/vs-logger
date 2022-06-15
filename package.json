@@ -67,10 +67,20 @@
         "configuration": {
             "title": "VS-Logger",
             "properties": { 
-                "vs-logger.customCb": { 
+                "vs-logger.consoleLog": { 
                     "type": "string",
                     "default": "",
-                    "description": "custom callbacks"
+                    "description": "custom console log"
+                },
+                "vs-logger.consoleError": { 
+                    "type": "string",
+                    "default": "",
+                    "description": "custom console error"
+                },
+                "vs-logger.consoleWarn": { 
+                    "type": "string",
+                    "default": "",
+                    "description": "custom console warn"
                 }
             }
         }

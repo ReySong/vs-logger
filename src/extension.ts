@@ -7,12 +7,18 @@ export function activate(context: vscode.ExtensionContext) {
     }
 }
 
-interface methodContainer {
+interface MethodContainer {
     [propName: string]: () => void;
 }
-const container = {} as methodContainer;
+
+const container = {} as MethodContainer;
+const customCbs = vscode.workspace.getConfiguration().get("vs-logger");
 ["logSelection", "errorSelection", "warnSelection"].map((method) => {
-    const option = `console.${method.slice(0, -9)}`;
+    let option = `console.${method.slice(0, -9)}`;
+    const customOption = option.slice(0, 7) + option[8].toUpperCase() + option.slice(9);
+    if (customOption in (customCbs as any)) {
+        option = (customCbs as any)[customOption];
+    }
     container[method] = () => {
         const textContent = getSelectedText(option);
         writeFile(textContent);
