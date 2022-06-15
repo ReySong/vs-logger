@@ -5,6 +5,6 @@ export interface clearOption {
     [customOption: string]: string;
 }
 export interface clearCnt {
-    logCnt: number;
+    log: number;
     [customCnt: string]: number;
 }

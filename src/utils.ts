@@ -32,6 +32,79 @@ export function editFile(textContent: string[]) {
     });
 }
 
+function isQuotationMark(char: string): boolean {
+    return char === "`" || char === "'" || char === '"';
+}
+
+function isText(char: string): boolean {
+    return /[^()'"`;]/.test(char);
+}
+
+function shouldJumpToEnd(stk: string[], char: string): boolean {
+    if (stk[stk.length - 1] === "(" && char === ")") {
+        stk.pop();
+    }
+    return stk.length === 0;
+}
+
+function parse(start: number): number | null {
+    const document = vscode.window.activeTextEditor?.document;
+    if (!document) return null;
+    let currentState: State = State.bracketOpen;
+    let endIndex = start;
+    const bracketsStk = ["("];
+    while (currentState !== State.bracketEnd) {
+        const startPosition = document.positionAt(endIndex);
+
+        let text = document.getText(
+            new vscode.Range(startPosition.line, startPosition.character, startPosition.line + 1, 0)
+        );
+        let preQuotationMark: string = "";
+        for (const char of text) {
+            if (char === "(") bracketsStk.push("(");
+            switch (currentState) {
+                case State.bracketOpen:
+                    if (char === ")" && shouldJumpToEnd(bracketsStk, char)) currentState = State.bracketEnd;
+                    else if (isQuotationMark(char)) {
+                        currentState = State.stringStart;
+                        preQuotationMark = char;
+                    } else if (isText(char)) currentState = State.text;
+                    break;
+                case State.stringStart:
+                    if (isQuotationMark(char) && preQuotationMark === char) {
+                        currentState = State.stringEnd;
+                        preQuotationMark = "";
+                    }
+                    break;
+                case State.text:
+                    if (char === ",") currentState = State.comma;
+                    else if (char === ")" && shouldJumpToEnd(bracketsStk, char)) currentState = State.bracketEnd;
+                    break;
+                case State.comma:
+                    if (isQuotationMark(char)) {
+                        currentState = State.stringStart;
+                        preQuotationMark = char;
+                    } else if (isText(char)) {
+                        currentState = State.text;
+                    }
+                    break;
+                case State.stringEnd:
+                    if (char === ",") currentState = State.comma;
+                    else if (char === ")" && shouldJumpToEnd(bracketsStk, char)) currentState = State.bracketEnd;
+                    break;
+            }
+            ++endIndex;
+            if (currentState === State.bracketEnd) break;
+        }
+    }
+
+    const curPosition = document.positionAt(endIndex);
+    const nextPosition = document.positionAt(endIndex + 1);
+    let nextChar = document.getText(new vscode.Range(curPosition, nextPosition));
+
+    return nextChar === ";" ? endIndex + 1 : endIndex;
+}
+
 export function clearConsole(options: clearOption = {}) {
     const editor = vscode.window.activeTextEditor;
 
@@ -39,28 +112,29 @@ export function clearConsole(options: clearOption = {}) {
 
     const document = editor.document;
     const text = document.getText();
-    const deleteOption = "";
-    const reg: RegExp = /console.(log|error|warn)\(/gi;
+    const reg: RegExp = /console.log\(/g;
     const cnt: clearCnt = {
-        logCnt: 0,
-        errorCnt: 0,
-        warnCnt: 0,
+        log: 0,
     };
 
     const ranges = [] as vscode.Range[];
-
     let matchText;
     while ((matchText = reg.exec(text))) {
-        const lastIndex = reg.lastIndex;
+        const lastIndex = parse(matchText.index + matchText[0].length);
+        if (!lastIndex) break;
         const range = new vscode.Range(document.positionAt(matchText.index), document.positionAt(lastIndex));
-
         if (!range.isEmpty) {
             ranges.push(range);
+            ++cnt.log;
         }
     }
 
     editor
-        .edit((handler) => {})
+        .edit((handler) => {
+            ranges.forEach((range) => {
+                handler.replace(range, "");
+            });
+        })
         .then(() => {
             let str = "";
             for (const key in cnt) {
