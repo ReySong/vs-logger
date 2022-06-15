@@ -1,60 +1,58 @@
 import * as vscode from "vscode";
+import { MethodContainer } from "./type";
+import { getSelectedText, editFile, clearConsole } from "./utils";
 
-export function activate(context: vscode.ExtensionContext) {
-    for (const m in container) {
-        let disposable = vscode.commands.registerCommand(`vs-logger.${m}`, container[m]);
-        context.subscriptions.push(disposable);
+const customOptionMap = new Map<string, string>();
+const customCbs = vscode.workspace.getConfiguration().get("vs-logger");
+for (const key in customCbs as any) {
+    const option = (customCbs as any)[key];
+    switch (key) {
+        case "consoleLog":
+            customOptionMap.set("console.log", option);
+            break;
+        case "consoleError":
+            customOptionMap.set("console.error", option);
+            break;
+        case "consoleWarn":
+            customOptionMap.set("console.warn", option);
+            break;
     }
 }
 
-interface MethodContainer {
-    [propName: string]: () => void;
-}
-
-const container = {} as MethodContainer;
-const customCbs = vscode.workspace.getConfiguration().get("vs-logger");
+const methodContainer = {} as MethodContainer;
 ["logSelection", "errorSelection", "warnSelection"].map((method) => {
     let option = `console.${method.slice(0, -9)}`;
-    const customOption = option.slice(0, 7) + option[8].toUpperCase() + option.slice(9);
-    if (customOption in (customCbs as any)) {
-        option = (customCbs as any)[customOption];
-    }
-    container[method] = () => {
-        const textContent = getSelectedText(option);
-        writeFile(textContent);
+    if (customOptionMap.has(option)) option = customOptionMap.get(option)!;
+    methodContainer[method] = () => {
+        editFile(getSelectedText(option));
     };
 });
 
-function getSelectedText(option: string): string[] {
-    const editor = vscode.window.activeTextEditor;
-    const textContent = [] as string[];
-
-    const ranges = editor?.selections;
-    ranges?.forEach((r) => {
-        const text = editor?.document.getText(r);
-        let str = text ? `${option}(${JSON.stringify(text + ":")}, ${text});` : `${option}()`;
-        textContent.push(str);
-    });
-
-    return textContent;
+export function activate(context: vscode.ExtensionContext) {
+    for (const m in methodContainer) {
+        const disposable = vscode.commands.registerCommand(`vs-logger.${m}`, methodContainer[m]);
+        context.subscriptions.push(disposable);
+    }
+    context.subscriptions.push(
+        vscode.commands.registerCommand("vs-logger.clearAllLog", () =>
+            clearConsole({
+                log: true,
+            })
+        )
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand("vs-logger.clearAllErrors", () =>
+            clearConsole({
+                error: true,
+            })
+        )
+    );
+    context.subscriptions.push(
+        vscode.commands.registerCommand("vs-logger.clearAllWarnings", () =>
+            clearConsole({
+                warn: true,
+            })
+        )
+    );
+    context.subscriptions.push(vscode.commands.registerCommand("vs-logger.clear", clearConsole));
 }
-
-function writeFile(textContent: string[]) {
-    vscode.commands.executeCommand("editor.action.insertLineAfter").then(() => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
-        const ranges = editor.selections;
-        const positions = [] as vscode.Position[];
-        ranges.forEach((r) => {
-            const position = new vscode.Position(r.start.line, r.start.character);
-            positions.push(position);
-        });
-        editor.edit((handler) => {
-            positions.forEach((position, index) => {
-                handler.insert(position, textContent[index]);
-            });
-        });
-    });
-}
-
-export function deactivate() {}

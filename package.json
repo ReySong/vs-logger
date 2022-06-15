@@ -27,6 +27,22 @@
             {
 				"command": "vs-logger.warnSelection",
 				"title": "WarnSelection"
+			},
+            {
+				"command": "vs-logger.clearAllLog",
+				"title": "ClearAllLog"
+			},
+            {
+				"command": "vs-logger.clearAllErrors",
+				"title": "ClearAllErrors"
+			},
+            {
+				"command": "vs-logger.clearAllWarnings",
+				"title": "ClearAllWarnings"
+			},
+            {
+				"command": "vs-logger.clear",
+				"title": "Clear"
 			}
 		],
         "menus": { 
@@ -44,6 +60,26 @@
                 { 
                     "when": "editorFocus",
                     "command": "vs-logger.warnSelection",
+                    "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.clearAllLog",
+                    "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.clearAllErrors",
+                    "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.clearAllWarnings",
+                    "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.clear",
                     "group": "z_commands" 
                 }
             ]
@@ -63,6 +99,26 @@
             "command": "vs-logger.warnSelection",
             "key": "alt+w",
             "mac": "alt+w"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.clearAllLog",
+            "key": "shift+c",
+            "mac": "shift+c"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.clearAllErrors",
+            "key": "shift+e",
+            "mac": "shift+e"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.clearAllWarnings",
+            "key": "shift+w",
+            "mac": "shift+w"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.clear",
+            "key": "ctrl+alt+c",
+            "mac": "ctrl+alt+c"
         }],
         "configuration": {
             "title": "VS-Logger",
