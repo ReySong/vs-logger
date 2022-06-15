@@ -3,18 +3,18 @@ import { MethodContainer } from "./type";
 import { getSelectedText, editFile, clearConsole } from "./utils";
 
 const customOptionMap = new Map<string, string>();
-const customCbs = vscode.workspace.getConfiguration().get("vs-logger");
+const customCbs = vscode.workspace.getConfiguration().get("vsc-logger");
 for (const key in customCbs as any) {
-    const option = (customCbs as any)[key];
+    const option = (customCbs as any)[key] as string;
     switch (key) {
         case "consoleLog":
-            customOptionMap.set("console.log", option);
+            option !== "" && customOptionMap.set("console.log", option);
             break;
         case "consoleError":
-            customOptionMap.set("console.error", option);
+            option !== "" && customOptionMap.set("console.error", option);
             break;
         case "consoleWarn":
-            customOptionMap.set("console.warn", option);
+            option !== "" && customOptionMap.set("console.warn", option);
             break;
     }
 }
@@ -30,29 +30,29 @@ const methodContainer = {} as MethodContainer;
 
 export function activate(context: vscode.ExtensionContext) {
     for (const m in methodContainer) {
-        const disposable = vscode.commands.registerCommand(`vs-logger.${m}`, methodContainer[m]);
+        const disposable = vscode.commands.registerCommand(`vsc-logger.${m}`, methodContainer[m]);
         context.subscriptions.push(disposable);
     }
     context.subscriptions.push(
-        vscode.commands.registerCommand("vs-logger.clearAllLog", () =>
+        vscode.commands.registerCommand("vsc-logger.clearAllLog", () =>
             clearConsole({
                 log: true,
             })
         )
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand("vs-logger.clearAllErrors", () =>
+        vscode.commands.registerCommand("vsc-logger.clearAllErrors", () =>
             clearConsole({
                 error: true,
             })
         )
     );
     context.subscriptions.push(
-        vscode.commands.registerCommand("vs-logger.clearAllWarnings", () =>
+        vscode.commands.registerCommand("vsc-logger.clearAllWarnings", () =>
             clearConsole({
                 warn: true,
             })
         )
     );
-    context.subscriptions.push(vscode.commands.registerCommand("vs-logger.clear", clearConsole));
+    context.subscriptions.push(vscode.commands.registerCommand("vsc-logger.clear", clearConsole));
 }
