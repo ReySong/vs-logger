@@ -19,6 +19,14 @@
 			{
 				"command": "vs-logger.logSelection",
 				"title": "LogSelection"
+			},
+            {
+				"command": "vs-logger.errorSelection",
+				"title": "ErrorSelection"
+			},
+            {
+				"command": "vs-logger.warnSelection",
+				"title": "WarnSelection"
 			}
 		],
         "menus": { 
@@ -27,9 +35,35 @@
                     "when": "editorFocus",
                     "command": "vs-logger.logSelection",
                     "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.errorSelection",
+                    "group": "z_commands" 
+                },
+                { 
+                    "when": "editorFocus",
+                    "command": "vs-logger.warnSelection",
+                    "group": "z_commands" 
                 }
             ]
-        }
+        },
+        "keybindings": [{
+            "when": "editorTextFocus",
+            "command": "vs-logger.logSelection",
+            "key": "alt+c",
+            "mac": "alt+c"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.errorSelection",
+            "key": "alt+e",
+            "mac": "alt+e"
+        },{
+            "when": "editorTextFocus",
+            "command": "vs-logger.warnSelection",
+            "key": "alt+w",
+            "mac": "alt+w"
+        }]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",

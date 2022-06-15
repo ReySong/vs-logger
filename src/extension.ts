@@ -1,24 +1,39 @@
 import * as vscode from "vscode";
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log(123);
-    console.log(vscode.window.activeTextEditor?.selections);
-    let disposable = vscode.commands.registerCommand("vs-logger.logSelection", logSelection);
-
-    context.subscriptions.push(disposable);
+    for (const m in container) {
+        let disposable = vscode.commands.registerCommand(`vs-logger.${m}`, container[m]);
+        context.subscriptions.push(disposable);
+    }
 }
 
-function logSelection() {
+interface methodContainer {
+    [propName: string]: () => void;
+}
+const container = {} as methodContainer;
+["logSelection", "errorSelection", "warnSelection"].map((method) => {
+    const option = `console.${method.slice(0, -9)}`;
+    container[method] = () => {
+        const textContent = getSelectedText(option);
+        writeFile(textContent);
+    };
+});
+
+function getSelectedText(option: string): string[] {
     const editor = vscode.window.activeTextEditor;
-    if (!editor) return;
     const textContent = [] as string[];
-    const ranges = editor.selections;
-    ranges.forEach((r) => {
-        const text = editor.document.getText(r);
-        let str = text ? `console.log(${JSON.stringify(text + ":")}, ${text});` : "console.log";
+
+    const ranges = editor?.selections;
+    ranges?.forEach((r) => {
+        const text = editor?.document.getText(r);
+        let str = text ? `${option}(${JSON.stringify(text + ":")}, ${text});` : `${option}()`;
         textContent.push(str);
     });
 
+    return textContent;
+}
+
+function writeFile(textContent: string[]) {
     vscode.commands.executeCommand("editor.action.insertLineAfter").then(() => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
