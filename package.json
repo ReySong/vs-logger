@@ -1,6 +1,6 @@
 {
-  "name": "vs-logger",
-	"displayName": "vs-logger",
+  "name": "vsc-logger",
+	"displayName": "vsc-logger",
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
@@ -17,31 +17,31 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "vs-logger.logSelection",
+				"command": "vsc-logger.logSelection",
 				"title": "LogSelection"
 			},
             {
-				"command": "vs-logger.errorSelection",
+				"command": "vsc-logger.errorSelection",
 				"title": "ErrorSelection"
 			},
             {
-				"command": "vs-logger.warnSelection",
+				"command": "vsc-logger.warnSelection",
 				"title": "WarnSelection"
 			},
             {
-				"command": "vs-logger.clearAllLog",
+				"command": "vsc-logger.clearAllLog",
 				"title": "ClearAllLog"
 			},
             {
-				"command": "vs-logger.clearAllErrors",
+				"command": "vsc-logger.clearAllErrors",
 				"title": "ClearAllErrors"
 			},
             {
-				"command": "vs-logger.clearAllWarnings",
+				"command": "vsc-logger.clearAllWarnings",
 				"title": "ClearAllWarnings"
 			},
             {
-				"command": "vs-logger.clear",
+				"command": "vsc-logger.clear",
 				"title": "Clear"
 			}
 		],
@@ -49,91 +49,91 @@
             "editor/context": [ 
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.logSelection",
+                    "command": "vsc-logger.logSelection",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.errorSelection",
+                    "command": "vsc-logger.errorSelection",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.warnSelection",
+                    "command": "vsc-logger.warnSelection",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.clearAllLog",
+                    "command": "vsc-logger.clearAllLog",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.clearAllErrors",
+                    "command": "vsc-logger.clearAllErrors",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.clearAllWarnings",
+                    "command": "vsc-logger.clearAllWarnings",
                     "group": "z_commands" 
                 },
                 { 
                     "when": "editorFocus",
-                    "command": "vs-logger.clear",
+                    "command": "vsc-logger.clear",
                     "group": "z_commands" 
                 }
             ]
         },
         "keybindings": [{
             "when": "editorTextFocus",
-            "command": "vs-logger.logSelection",
+            "command": "vsc-logger.logSelection",
             "key": "alt+c",
             "mac": "alt+c"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.errorSelection",
+            "command": "vsc-logger.errorSelection",
             "key": "alt+e",
             "mac": "alt+e"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.warnSelection",
+            "command": "vsc-logger.warnSelection",
             "key": "alt+w",
             "mac": "alt+w"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.clearAllLog",
+            "command": "vsc-logger.clearAllLog",
             "key": "shift+c",
             "mac": "shift+c"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.clearAllErrors",
+            "command": "vsc-logger.clearAllErrors",
             "key": "shift+e",
             "mac": "shift+e"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.clearAllWarnings",
+            "command": "vsc-logger.clearAllWarnings",
             "key": "shift+w",
             "mac": "shift+w"
         },{
             "when": "editorTextFocus",
-            "command": "vs-logger.clear",
+            "command": "vsc-logger.clear",
             "key": "ctrl+alt+c",
             "mac": "ctrl+alt+c"
         }],
         "configuration": {
-            "title": "VS-Logger",
+            "title": "VSC-Logger",
             "properties": { 
-                "vs-logger.consoleLog": { 
+                "vsc-logger.consoleLog": { 
                     "type": "string",
                     "default": "",
                     "description": "custom console log"
                 },
-                "vs-logger.consoleError": { 
+                "vsc-logger.consoleError": { 
                     "type": "string",
                     "default": "",
                     "description": "custom console error"
                 },
-                "vs-logger.consoleWarn": { 
+                "vsc-logger.consoleWarn": { 
                     "type": "string",
                     "default": "",
                     "description": "custom console warn"
