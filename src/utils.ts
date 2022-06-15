@@ -32,13 +32,7 @@ export function editFile(textContent: string[]) {
     });
 }
 
-export function clearConsole(
-    options: clearOption = {
-        log: true,
-        error: true,
-        warn: true,
-    }
-) {
+export function clearConsole(options: clearOption = {}) {
     const editor = vscode.window.activeTextEditor;
 
     if (!editor) return;

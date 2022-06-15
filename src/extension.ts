@@ -33,26 +33,5 @@ export function activate(context: vscode.ExtensionContext) {
         const disposable = vscode.commands.registerCommand(`vsc-logger.${m}`, methodContainer[m]);
         context.subscriptions.push(disposable);
     }
-    context.subscriptions.push(
-        vscode.commands.registerCommand("vsc-logger.clearAllLog", () =>
-            clearConsole({
-                log: true,
-            })
-        )
-    );
-    context.subscriptions.push(
-        vscode.commands.registerCommand("vsc-logger.clearAllErrors", () =>
-            clearConsole({
-                error: true,
-            })
-        )
-    );
-    context.subscriptions.push(
-        vscode.commands.registerCommand("vsc-logger.clearAllWarnings", () =>
-            clearConsole({
-                warn: true,
-            })
-        )
-    );
     context.subscriptions.push(vscode.commands.registerCommand("vsc-logger.clear", clearConsole));
 }

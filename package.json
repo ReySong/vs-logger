@@ -18,31 +18,19 @@
 		"commands": [
 			{
 				"command": "vsc-logger.logSelection",
-				"title": "LogSelection"
+				"title": "Console Log All Selections"
 			},
             {
 				"command": "vsc-logger.errorSelection",
-				"title": "ErrorSelection"
+				"title": "Console Error All Selections"
 			},
             {
 				"command": "vsc-logger.warnSelection",
-				"title": "WarnSelection"
-			},
-            {
-				"command": "vsc-logger.clearAllLog",
-				"title": "ClearAllLog"
-			},
-            {
-				"command": "vsc-logger.clearAllErrors",
-				"title": "ClearAllErrors"
-			},
-            {
-				"command": "vsc-logger.clearAllWarnings",
-				"title": "ClearAllWarnings"
+				"title": "Console Warn All Selections"
 			},
             {
 				"command": "vsc-logger.clear",
-				"title": "Clear"
+				"title": "Clear All Logs"
 			}
 		],
         "menus": { 
@@ -60,21 +48,6 @@
                 { 
                     "when": "editorFocus",
                     "command": "vsc-logger.warnSelection",
-                    "group": "z_commands" 
-                },
-                { 
-                    "when": "editorFocus",
-                    "command": "vsc-logger.clearAllLog",
-                    "group": "z_commands" 
-                },
-                { 
-                    "when": "editorFocus",
-                    "command": "vsc-logger.clearAllErrors",
-                    "group": "z_commands" 
-                },
-                { 
-                    "when": "editorFocus",
-                    "command": "vsc-logger.clearAllWarnings",
                     "group": "z_commands" 
                 },
                 { 
@@ -101,21 +74,6 @@
             "mac": "alt+w"
         },{
             "when": "editorTextFocus",
-            "command": "vsc-logger.clearAllLog",
-            "key": "shift+c",
-            "mac": "shift+c"
-        },{
-            "when": "editorTextFocus",
-            "command": "vsc-logger.clearAllErrors",
-            "key": "shift+e",
-            "mac": "shift+e"
-        },{
-            "when": "editorTextFocus",
-            "command": "vsc-logger.clearAllWarnings",
-            "key": "shift+w",
-            "mac": "shift+w"
-        },{
-            "when": "editorTextFocus",
             "command": "vsc-logger.clear",
             "key": "ctrl+alt+c",
             "mac": "ctrl+alt+c"
@@ -125,18 +83,15 @@
             "properties": { 
                 "vsc-logger.consoleLog": { 
                     "type": "string",
-                    "default": "",
-                    "description": "custom console log"
+                    "description": "Custom console log"
                 },
                 "vsc-logger.consoleError": { 
                     "type": "string",
-                    "default": "",
-                    "description": "custom console error"
+                    "description": "Custom console error"
                 },
                 "vsc-logger.consoleWarn": { 
                     "type": "string",
-                    "default": "",
-                    "description": "custom console warn"
+                    "description": "Custom console warn"
                 }
             }
         }
