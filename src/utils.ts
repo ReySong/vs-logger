@@ -61,7 +61,6 @@ function parse(start: number): number | null {
         );
         let preQuotationMark: string = "";
         for (const char of text) {
-            if (char === "(") bracketsStk.push("(");
             switch (currentState) {
                 case State.bracketOpen:
                     if (char === ")" && shouldJumpToEnd(bracketsStk, char)) currentState = State.bracketEnd;
@@ -79,6 +78,7 @@ function parse(start: number): number | null {
                 case State.text:
                     if (char === ",") currentState = State.comma;
                     else if (char === ")" && shouldJumpToEnd(bracketsStk, char)) currentState = State.bracketEnd;
+                    if (char === "(") bracketsStk.push("(");
                     break;
                 case State.comma:
                     if (isQuotationMark(char)) {
