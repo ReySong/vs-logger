@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { clearOption, clearCnt } from "./type";
+import { ClearCnt } from "./type";
 import { State } from "./enums";
 
 export function getSelectedText(option: string): string[] {
@@ -105,18 +105,23 @@ function parse(start: number): number | null {
     return nextChar === ";" ? endIndex + 1 : endIndex;
 }
 
-export function clearConsole(options: clearOption = {}) {
+export function clearConsole(
+    cnt: ClearCnt = {
+        ["console.log"]: 0,
+    }
+) {
     const editor = vscode.window.activeTextEditor;
 
     if (!editor) return;
 
     const document = editor.document;
     const text = document.getText();
-    const reg: RegExp = /console.log\(/g;
-    const cnt: clearCnt = {
-        log: 0,
-    };
-
+    let regStr = "";
+    for (const key in cnt) {
+        regStr = regStr + key + "\\(|";
+    }
+    regStr = regStr.slice(0, -1);
+    const reg: RegExp = new RegExp(regStr, "g");
     const ranges = [] as vscode.Range[];
     let matchText;
     while ((matchText = reg.exec(text))) {
@@ -139,7 +144,7 @@ export function clearConsole(options: clearOption = {}) {
             let str = "";
             for (const key in cnt) {
                 if (cnt[key]) {
-                    str += `${cnt[key]} console.${key} deleted\n`;
+                    str += `${cnt[key]} ${key} deleted\n`;
                 }
             }
             vscode.window.showInformationMessage(str.slice(0, -2));

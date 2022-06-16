@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
-import { MethodContainer } from "./type";
+import { MethodContainer, ClearCnt } from "./type";
 import { getSelectedText, editFile, clearConsole } from "./utils";
 
 const customOptionMap = new Map<string, string>();
-const customCbs = vscode.workspace.getConfiguration().get("vsc-logger");
+const clearCnt: ClearCnt = { ["console.log"]: 0 };
+const customCbs = vscode.workspace.getConfiguration().get("vsc-logger"); //  获取自定义指令
 for (const key in customCbs as any) {
     const option = (customCbs as any)[key] as string;
     switch (key) {
@@ -17,6 +18,9 @@ for (const key in customCbs as any) {
             option !== "" && customOptionMap.set("console.warn", option);
             break;
     }
+}
+if (customOptionMap.has("console.log")) {
+    clearCnt[`${customOptionMap.get("console.log")}`] = 0;
 }
 
 const methodContainer = {} as MethodContainer;
@@ -33,5 +37,5 @@ export function activate(context: vscode.ExtensionContext) {
         const disposable = vscode.commands.registerCommand(`vsc-logger.${m}`, methodContainer[m]);
         context.subscriptions.push(disposable);
     }
-    context.subscriptions.push(vscode.commands.registerCommand("vsc-logger.clear", clearConsole));
+    context.subscriptions.push(vscode.commands.registerCommand("vsc-logger.clear", () => clearConsole(clearCnt)));
 }
