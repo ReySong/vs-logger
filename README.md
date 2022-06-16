@@ -5,7 +5,8 @@ VSC-Logger is a vscode plugin that provides some shortcuts about console operati
 ## Function
 1. Quickly generate console template;
 2. Support custom console statements;
-3. Quickly generate && cancel multiline comment.
+3. Quickly clear all the console log statements and custom console log statements;
+4. Quickly generate && cancel multiline comment.
 
 ## Usage
 * `···`
