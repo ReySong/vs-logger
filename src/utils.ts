@@ -37,7 +37,7 @@ function isQuotationMark(char: string): boolean {
 }
 
 function isText(char: string): boolean {
-    return /[^()'"`;]/.test(char);
+    return /[^()'"`\s;]/.test(char);
 }
 
 function shouldJumpToEnd(stk: string[], char: string): boolean {
@@ -53,13 +53,13 @@ function parse(start: number): number | null {
     let currentState: State = State.bracketOpen;
     let endIndex = start;
     const bracketsStk = ["("];
+    let preQuotationMark: string = "";
     while (currentState !== State.bracketEnd) {
         const startPosition = document.positionAt(endIndex);
 
         let text = document.getText(
             new vscode.Range(startPosition.line, startPosition.character, startPosition.line + 1, 0)
         );
-        let preQuotationMark: string = "";
         for (const char of text) {
             switch (currentState) {
                 case State.bracketOpen:
