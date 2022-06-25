@@ -1,6 +1,6 @@
 <center><h1><b> VSC-Logger </b></h1></center>
 
-简体中文 | [English]("./README-en.md") 
+简体中文 | [English](./README-en.md) 
 
 VSC Logger 是一个 vscode 插件，它为 JS/TS 提供了一些有关控制台操作的快捷方式。
 

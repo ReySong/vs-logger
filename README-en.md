@@ -1,6 +1,6 @@
 <center><h1><b> VSC-Logger </b></h1></center>
 
-[简体中文]("./README-zh.md") | English
+[简体中文](./README.md) | English
 
 VSC-Logger is a vscode plugin that provides some shortcuts about console operation to JS/TS.
 
