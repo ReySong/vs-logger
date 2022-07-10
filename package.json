@@ -1,5 +1,8 @@
 {
-  "name": "vsc-logger",
+    "name": "vsc-logger",
+    "author": "Rey Song",
+    "publisher": "reysong",
+    "repository": "https://github.com/ReySong/vsc-logger",
 	"displayName": "vsc-logger",
 	"description": "",
 	"version": "0.0.1",
