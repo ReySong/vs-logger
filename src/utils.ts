@@ -9,7 +9,7 @@ export function getSelectedText(option: string): string[] {
   ranges?.forEach((r) => {
     const text = editor?.document.getText(r);
     let str = text
-      ? `${option}(###${JSON.stringify(text + ":")}, ${text});`
+      ? `${option}(${JSON.stringify("###" + text + ":")}, ${text});`
       : `${option}();`;
     textContent.push(str);
   });
